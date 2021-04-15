@@ -173,7 +173,14 @@ export default class extends PureComponent {
     // Draw the image once loaded
     this.image.onload = () =>
       drawImage({ ctx: this.ctx.grid, img: this.image });
-    this.image.src = this.props.imgSrc;
+    // this.image.src = this.props.imgSrc;
+    
+    // Skip for base64 images
+    if (this.props.imgSrc.includes('base64') || _.includes(this.props.imgSrc, '.s3.')) {
+      this.image.src = `${this.props.imgSrc}`;
+    } else {
+      this.image.src = `${this.props.imgSrc}?t=${new Date().getTime()}`;
+    }
   };
 
   undo = () => {
